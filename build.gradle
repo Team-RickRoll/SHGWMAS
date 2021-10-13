@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+    id "com.github.johnrengelman.shadow" version "6.1.0"
+}
+
+group 'io.github.TeamRickRoll'
+version '1.0'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spongepowered.org/maven' }
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.Minestom:Minestom:6dae441'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'io.github.TeamRickRoll.SHGWMAS',
+            "Multi-Release": true
+    }
+}

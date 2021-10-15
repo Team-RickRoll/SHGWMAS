@@ -25,3 +25,7 @@ hs_err_pid*
 # IntelliJ and Eclipse/VSC files
 .idea/
 .settings/
+
+# YAML
+*.yml
+*.yaml

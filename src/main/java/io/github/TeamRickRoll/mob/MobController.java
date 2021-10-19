@@ -1,5 +1,6 @@
 package io.github.TeamRickRoll.mob;
 
+import io.github.TeamRickRoll.sounds.SoundController;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EntityType;
@@ -14,6 +15,7 @@ public class MobController {
     }
 
     public void spawnEntity(Pos position, EntityType entityType, Player player){
+        SoundController.spook(player);
         Entity mob = new Mob(entityType, player);
         mob.setInstance(instance, position);
     }

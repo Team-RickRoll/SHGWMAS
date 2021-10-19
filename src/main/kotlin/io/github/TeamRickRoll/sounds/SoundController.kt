@@ -11,28 +11,45 @@ import net.minestom.server.utils.time.TimeUnit
 import kotlin.random.Random
 
 class SoundController(private val instanceContainer: InstanceContainer) {
-    private var currentTasks : List<Task>? = mutableListOf(); /* In case somehow multiple frenzies start, they will all stop correctly */
+
+    // In case somehow multiple frenzies start, they will all stop correctly by looping through all of them in this list
+    private var currentTasks : List<Task>? = mutableListOf();
     private val schedulerManager: SchedulerManager = MinecraftServer.getSchedulerManager();
 
-    private val sounds: List<SoundEvent> = listOf(
-        SoundEvent.AMBIENT_CAVE,
-        SoundEvent.ENTITY_ZOMBIE_AMBIENT,
-        SoundEvent.ENTITY_GHAST_AMBIENT,
-        SoundEvent.ENTITY_GHAST_HURT,
-        SoundEvent.ENTITY_GHAST_SCREAM,
-        SoundEvent.ENTITY_GHAST_SHOOT,
-        SoundEvent.ENTITY_CREEPER_PRIMED,
-        SoundEvent.ENTITY_SKELETON_AMBIENT,
-        SoundEvent.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR,
-        SoundEvent.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR,
-        SoundEvent.ENTITY_WITHER_AMBIENT
-    )
 
 
-    /* extention function (Player#spook() in kotlin, SoundController#spook(Player) in java */
-    private fun Player.spook(){
-        playSound(Sound.sound(sounds[Random.nextInt(sounds.size)], Sound.Source.MASTER, 1f, 1f))
+
+    /* Basically static, but in kotlin */
+
+    companion object{
+        private val sounds: List<SoundEvent> = listOf(
+            SoundEvent.AMBIENT_CAVE,
+            SoundEvent.ENTITY_ZOMBIE_AMBIENT,
+            SoundEvent.ENTITY_GHAST_AMBIENT,
+            SoundEvent.ENTITY_GHAST_HURT,
+            SoundEvent.ENTITY_GHAST_SCREAM,
+            SoundEvent.ENTITY_GHAST_SHOOT,
+            SoundEvent.ENTITY_CREEPER_PRIMED,
+            SoundEvent.ENTITY_SKELETON_AMBIENT,
+            SoundEvent.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR,
+            SoundEvent.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR,
+            SoundEvent.ENTITY_WITHER_AMBIENT
+            /* Needs more sounds */
+        )
+
+        /* Extension function (Player#spook() in kotlin, SoundController#spook(Player) in java */
+        @JvmStatic /* SoundController#Companion.spook(Player) becomes SoundController#spook(Player) cool, huh? */
+        fun Player.spook(){
+            playSound(
+                Sound.sound(sounds[Random.nextInt(sounds.size)], Sound.Source.MASTER, 1f, 1f),
+                /* Picks a random position around the player, so it's not right on them */
+                (position.x() -8) + Random.nextDouble(16.toDouble()),
+                (position.y() -8) + Random.nextDouble(16.toDouble()),
+                (position.z() -8) + Random.nextDouble(16.toDouble()),
+            )
+        }
     }
+
 
 
 

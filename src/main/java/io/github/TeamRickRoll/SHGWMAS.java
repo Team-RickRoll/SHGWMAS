@@ -17,11 +17,14 @@ public class SHGWMAS {
         InstanceContainer instanceContainer = instanceManager.createInstanceContainer();
         instanceContainer.setChunkGenerator(new GeneratorDemo());
 
+        MobController mobController = new MobController(instanceContainer);
+
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
         globalEventHandler.addListener(PlayerLoginEvent.class, event -> {
            final Player player = event.getPlayer();
            event.setSpawningInstance(instanceContainer);
            player.setRespawnPoint(new Pos(0, 50, 0));
+
         });
 
         minestom.start("0.0.0.0", 25565);

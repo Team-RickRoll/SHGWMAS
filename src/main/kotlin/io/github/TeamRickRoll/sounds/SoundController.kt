@@ -24,6 +24,8 @@ class SoundController(private val instanceContainer: InstanceContainer) {
         SoundEvent.ENTITY_CREEPER_PRIMED,
         SoundEvent.ENTITY_SKELETON_AMBIENT,
         SoundEvent.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR,
+        SoundEvent.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR,
+        SoundEvent.ENTITY_WITHER_AMBIENT
     )
 
 

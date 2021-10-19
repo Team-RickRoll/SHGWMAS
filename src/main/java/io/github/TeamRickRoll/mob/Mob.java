@@ -16,14 +16,19 @@ public class Mob extends EntityCreature {
         super(entityType);
         setGlowing(true);
         setCustomName(Component.text("THIS IS A NAME"));
+
+        // Basic ai that follows the entity provided in the constructor
+        // Updates its path once every 20ms
         addAIGroup(
                 new EntityAIGroupBuilder()
+                        // This tells the Mob what entity to actually follow
                         .addTargetSelector(new TargetSelector(this) {
                             @Override
                             public Entity findTarget() {
                                 return target;
                             }
                         })
+                        // The follow goal itself, grabs what entity it needs to follow from above
                         .addGoalSelector(new FollowTargetGoal(this, Duration.ofMillis(20)))
                         .build()
         );

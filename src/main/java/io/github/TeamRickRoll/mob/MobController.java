@@ -7,6 +7,7 @@ import net.minestom.server.entity.Player;
 import net.minestom.server.instance.Instance;
 
 public class MobController {
+    // The "world" to spawn the mob in
     Instance instance;
     public MobController(Instance instance){
         this.instance = instance;

@@ -6,14 +6,11 @@ import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.GlobalEventHandler;
-import net.minestom.server.event.player.PlayerBlockInteractEvent;
+import net.minestom.server.event.player.PlayerChatEvent;
 import net.minestom.server.event.player.PlayerLoginEvent;
 import net.minestom.server.extras.MojangAuth;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
-import net.minestom.server.timer.SchedulerManager;
-import net.minestom.server.timer.Task;
-
 public class SHGWMAS {
     public static void main(String[] args) {
         MinecraftServer minestom = MinecraftServer.init();
@@ -30,10 +27,9 @@ public class SHGWMAS {
         // Using the demo generator
         instanceContainer.setChunkGenerator(new GeneratorDemo());
 
-
         MobController mobController = new MobController(instanceContainer);
         SoundController soundController = new SoundController(instanceContainer);
-
+        soundController.soundLoop();
 
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
 
@@ -45,9 +41,11 @@ public class SHGWMAS {
         });
 
         // Right click block event used for debugging and testing
-        globalEventHandler.addListener(PlayerBlockInteractEvent.class, event -> {
+        globalEventHandler.addListener(PlayerChatEvent.class, event -> {
             // Whooo it works!
-            soundController.soundFrenzy();
+            if(event.getMessage().equals("SUS")){
+                soundController.soundFrenzy();
+            }
         });
 
         // Stars the server, please dont put stuff under here :3

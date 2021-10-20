@@ -8,20 +8,17 @@ import net.minestom.server.sound.SoundEvent
 import net.minestom.server.timer.SchedulerManager
 import net.minestom.server.timer.Task
 import net.minestom.server.utils.time.TimeUnit
+import java.time.Duration
 import kotlin.random.Random
 
 class SoundController(private val instanceContainer: InstanceContainer) {
-
     // In case somehow multiple frenzies start, they will all stop correctly by looping through all of them in this list
     private var currentTasks : List<Task>? = mutableListOf();
     private val schedulerManager: SchedulerManager = MinecraftServer.getSchedulerManager();
 
-
-
-
     /* Basically static, but in kotlin */
-
     companion object{
+
         private val sounds: List<SoundEvent> = listOf(
             SoundEvent.AMBIENT_CAVE,
             SoundEvent.ENTITY_ZOMBIE_AMBIENT,
@@ -33,7 +30,17 @@ class SoundController(private val instanceContainer: InstanceContainer) {
             SoundEvent.ENTITY_SKELETON_AMBIENT,
             SoundEvent.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR,
             SoundEvent.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR,
-            SoundEvent.ENTITY_WITHER_AMBIENT
+            SoundEvent.ENTITY_WITHER_AMBIENT,
+            SoundEvent.ENTITY_ENDER_DRAGON_AMBIENT,
+            SoundEvent.ENTITY_ENDER_DRAGON_DEATH,
+            SoundEvent.ENTITY_ENDER_DRAGON_GROWL,
+            SoundEvent.ENTITY_WITCH_DEATH,
+            SoundEvent.ENTITY_WITCH_AMBIENT,
+            SoundEvent.ENTITY_WITCH_HURT,
+            SoundEvent.ENTITY_SPIDER_AMBIENT,
+            SoundEvent.ENTITY_SPIDER_DEATH,
+            SoundEvent.ENTITY_SPIDER_HURT,
+            SoundEvent.ENTITY_SPIDER_STEP
             /* Needs more sounds */
         )
 
@@ -41,7 +48,7 @@ class SoundController(private val instanceContainer: InstanceContainer) {
         @JvmStatic /* SoundController#Companion.spook(Player) becomes SoundController#spook(Player) cool, huh? */
         fun Player.spook(){
             playSound(
-                Sound.sound(sounds[Random.nextInt(sounds.size)], Sound.Source.MASTER, 1f, 1f),
+                Sound.sound(sounds[Random.nextInt(sounds.size)], Sound.Source.MASTER, 1f, Random.nextFloat()),
                 /* Picks a random position around the player, so it's not right on them */
                 (position.x() -8) + Random.nextDouble(16.toDouble()),
                 (position.y() -8) + Random.nextDouble(16.toDouble()),
@@ -49,9 +56,6 @@ class SoundController(private val instanceContainer: InstanceContainer) {
             )
         }
     }
-
-
-
 
     fun soundFrenzy(){
         var i = 0;
@@ -74,5 +78,19 @@ class SoundController(private val instanceContainer: InstanceContainer) {
             i++
 
         }.repeat(250, TimeUnit.MILLISECOND).schedule()) // repeats every 250 ms (1/4 of a second or 5 ticks)
+    }
+
+    fun soundLoop(){
+        schedulerManager.buildTask {
+            if(Random.nextInt(3) == 1){
+                if(Random.nextInt(20) == 1){
+                    soundFrenzy()
+                }
+                for (player in instanceContainer.players){
+                    player.spook()
+                }
+            }
+
+        }.repeat(Duration.ofSeconds(7)).schedule()
     }
 }

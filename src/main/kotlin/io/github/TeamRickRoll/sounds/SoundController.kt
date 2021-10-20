@@ -84,10 +84,10 @@ class SoundController(private val instanceContainer: InstanceContainer) {
         schedulerManager.buildTask {
             if(Random.nextInt(3) == 1){
                 if(Random.nextInt(20) == 1){
-                    soundFrenzy()
+                    //soundFrenzy()
                 }
                 for (player in instanceContainer.players){
-                    player.spook()
+                    //player.spook()
                 }
             }
 

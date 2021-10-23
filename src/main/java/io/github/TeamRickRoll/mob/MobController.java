@@ -10,11 +10,12 @@ import net.minestom.server.instance.Instance;
 public class MobController {
     // The "world" to spawn the mob in
     Instance instance;
-    public MobController(Instance instance){
+
+    public MobController(Instance instance) {
         this.instance = instance;
     }
 
-    public void spawnEntity(Pos position, EntityType entityType, Player player){
+    public void spawnEntity(Pos position, EntityType entityType, Player player) {
         SoundController.spook(player);
         Entity mob = new Mob(entityType, player);
         mob.setInstance(instance, position);

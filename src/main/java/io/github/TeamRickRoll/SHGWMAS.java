@@ -1,7 +1,7 @@
 package io.github.TeamRickRoll;
 
 import io.github.TeamRickRoll.commands.StartGame;
-import io.github.TeamRickRoll.jumpscare.Jumpscare;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
@@ -11,10 +11,13 @@ import net.minestom.server.event.player.*;
 import net.minestom.server.extras.MojangAuth;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
-import net.minestom.server.instance.block.Block;
+import net.minestom.server.item.ItemStack;
+import net.minestom.server.item.Material;
+import net.minestom.server.scoreboard.Team;
 
 public class SHGWMAS {
     public static void main(String[] args) {
+
         MinecraftServer minestom = MinecraftServer.init();
         MojangAuth.init();
         InstanceManager instanceManager = MinecraftServer.getInstanceManager();

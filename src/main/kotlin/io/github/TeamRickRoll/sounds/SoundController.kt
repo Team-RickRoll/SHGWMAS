@@ -32,19 +32,6 @@ class SoundController(private val game: Game) {
             SoundEvent.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR,
             SoundEvent.ENTITY_LIGHTNING_BOLT_IMPACT,
             SoundEvent.ENTITY_LIGHTNING_BOLT_THUNDER,
-            // New Sounds
-            SoundEvent.ENTITY_WITHER_AMBIENT,
-            SoundEvent.ENTITY_ENDER_DRAGON_AMBIENT,
-            SoundEvent.ENTITY_ENDER_DRAGON_DEATH,
-            SoundEvent.ENTITY_ENDER_DRAGON_GROWL,
-            SoundEvent.ENTITY_WITCH_DEATH,
-            SoundEvent.ENTITY_WITCH_AMBIENT,
-            SoundEvent.ENTITY_WITCH_HURT,
-            SoundEvent.ENTITY_SPIDER_AMBIENT,
-            SoundEvent.ENTITY_SPIDER_DEATH,
-            SoundEvent.ENTITY_SPIDER_HURT,
-            SoundEvent.ENTITY_SPIDER_STEP,
-            // Custom Sounds
             SoundEvent.ENTITY_COD_DEATH,
             SoundEvent.ENTITY_DONKEY_EAT,
             SoundEvent.ENTITY_ENDERMITE_DEATH,
@@ -53,7 +40,7 @@ class SoundController(private val game: Game) {
             SoundEvent.ENTITY_EVOKER_PREPARE_SUMMON,
             SoundEvent.ENTITY_EVOKER_PREPARE_WOLOLO,
             SoundEvent.ENTITY_AXOLOTL_DEATH,
-            SoundEvent.ENTITY_AXOLOTL_HURT
+            SoundEvent.ENTITY_AXOLOTL_HURT,
             /* Needs more sounds */
         )
 

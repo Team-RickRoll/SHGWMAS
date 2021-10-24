@@ -18,6 +18,7 @@ import net.minestom.server.event.EventFilter.ALL
 import net.minestom.server.event.EventNode
 import net.minestom.server.event.entity.EntityAttackEvent
 import net.minestom.server.event.player.PlayerBlockInteractEvent
+import net.minestom.server.event.player.PlayerDeathEvent
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
 import net.minestom.server.potion.Potion
@@ -39,6 +40,11 @@ class Game(val instance: Instance) {
         Component.text("ALL OF THE CANDY HAS BEEN FOUND!", NamedTextColor.GREEN),
         Component.text("You are free to leave >:), until later. Alligator", NamedTextColor.DARK_GREEN)
     )
+    private val deathLossTitle = Title.title(
+        Component.text("ALL OF YOU DIED!", NamedTextColor.RED),
+        Component.text("SO BAD!!!", NamedTextColor.DARK_RED)
+    )
+
     private var task: Task? = null
     private var timer: Int = 480
     private var currentCandy = 0
@@ -76,6 +82,7 @@ class Game(val instance: Instance) {
         Pos(-344.0, 82.0, -352.0),
         Pos(-343.0, 82.0, -343.0),
         Pos(-332.0, 80.0, -325.0),
+        Pos(-337.0, 72.0, -330.0),
     )
     private val bossBar = BossBar.bossBar(
         Component.text("Time Left: ${formatTime(timer)}"),
@@ -111,11 +118,11 @@ class Game(val instance: Instance) {
     private fun spawnCandy() {
         for(i in 1..24){
             val random = Random.nextInt(candyLocs.size)
-            instance.setBlock(candyLocs.get(random), Block.AIR)
+            instance.setBlock(candyLocs[random], Block.AIR)
             candyLocs.removeAt(random)
         }
         for (pos in candyLocs) {
-            instance.setBlock(pos, Block.AMETHYST_BLOCK.withTag(Tag.String("candy"), "yes"))
+            instance.setBlock(pos, Block.BUDDING_AMETHYST.withTag(Tag.String("candy"), "yes"))
         }
     }
 
@@ -179,7 +186,13 @@ class Game(val instance: Instance) {
                     MinecraftServer.getSchedulerManager().buildTask { canAttack[entity] = true }
                         .delay(Duration.ofSeconds(2)).schedule()
                 }
+        }
+        eventNode.listenOnly<PlayerDeathEvent> {
+            players.remove(player)
+            if(players.size == 0){
+                cleanupGame()
             }
+        }
 
         // Registering the node
         MinecraftServer.getGlobalEventHandler().addChild(eventNode)

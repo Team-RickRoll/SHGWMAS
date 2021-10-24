@@ -1,24 +1,24 @@
 package io.github.TeamRickRoll;
 
-<<<<<<< HEAD
-=======
 import io.github.TeamRickRoll.commands.StartGame;
 import io.github.TeamRickRoll.mob.MobController;
->>>>>>> COOKIE
+
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
+import net.minestom.server.entity.Entity;
+import net.minestom.server.entity.LivingEntity;
 import net.minestom.server.entity.Player;
+import net.minestom.server.entity.damage.DamageType;
 import net.minestom.server.event.GlobalEventHandler;
+import net.minestom.server.event.entity.EntityAttackEvent;
+import net.minestom.server.event.player.PlayerBlockBreakEvent;
+import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.event.player.PlayerLoginEvent;
 import net.minestom.server.extras.MojangAuth;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
-
-<<<<<<< HEAD
-=======
 import java.time.Duration;
 import java.util.HashMap;
->>>>>>> COOKIE
 
 public class SHGWMAS {
     public static void main(String[] args) {
@@ -26,9 +26,8 @@ public class SHGWMAS {
         MojangAuth.init();
         InstanceManager instanceManager = MinecraftServer.getInstanceManager();
         InstanceContainer instanceContainer = instanceManager.createInstanceContainer();
-
-        //instanceContainer.setChunkGenerator(new GeneratorDemo());
-
+        Game game = new Game(instanceContainer);
+        HashMap<Entity, Boolean> canAttack = new HashMap<>();
         MobController mobController = new MobController(instanceContainer);
 
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
@@ -38,8 +37,6 @@ public class SHGWMAS {
             player.setRespawnPoint(new Pos(0, 200, 0));
         });
 
-<<<<<<< HEAD
-=======
         globalEventHandler.addListener(PlayerDisconnectEvent.class, event -> {
             if(instanceContainer.getPlayers().size() < 2 /* Event called before the player is removed from the players map */
                     && game.getGameState() == 1){
@@ -72,7 +69,6 @@ public class SHGWMAS {
                 )
         );
         // Starts the server, please don't put stuff under here :3
->>>>>>> COOKIE
         minestom.start("0.0.0.0", 25565);
     }
 }

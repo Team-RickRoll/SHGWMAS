@@ -1,9 +1,10 @@
 package io.github.TeamRickRoll.sounds
 
+import io.github.TeamRickRoll.Game
+import io.github.TeamRickRoll.mob.MobController
 import net.kyori.adventure.sound.Sound
 import net.minestom.server.MinecraftServer
 import net.minestom.server.entity.Player
-import net.minestom.server.instance.Instance
 import net.minestom.server.sound.SoundEvent
 import net.minestom.server.timer.SchedulerManager
 import net.minestom.server.timer.Task
@@ -11,14 +12,13 @@ import net.minestom.server.utils.time.TimeUnit
 import java.time.Duration
 import kotlin.random.Random
 
-class SoundController(private val instance: Instance) {
+class SoundController(private val game: Game) {
     // In case somehow multiple frenzies start, they will all stop correctly by looping through all of them in this list
     private var currentTasks: List<Task>? = mutableListOf()
     private val schedulerManager: SchedulerManager = MinecraftServer.getSchedulerManager()
 
     /* Basically static, but in kotlin */
     companion object {
-
         private val sounds: List<SoundEvent> = listOf(
             SoundEvent.AMBIENT_CAVE,
             SoundEvent.ENTITY_ZOMBIE_AMBIENT,
@@ -30,6 +30,8 @@ class SoundController(private val instance: Instance) {
             SoundEvent.ENTITY_SKELETON_AMBIENT,
             SoundEvent.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR,
             SoundEvent.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR,
+            SoundEvent.ENTITY_LIGHTNING_BOLT_IMPACT,
+            SoundEvent.ENTITY_LIGHTNING_BOLT_THUNDER,
             /* Needs more sounds */
         )
 
@@ -43,12 +45,13 @@ class SoundController(private val instance: Instance) {
                 (position.y() - 8) + Random.nextDouble(16.toDouble()),
                 (position.z() - 8) + Random.nextDouble(16.toDouble()),
             )
+
         }
     }
 
     fun soundFrenzy() {
         var i = 0
-        /* adds the task to the list, no cancel() method like in bukkit, so we have to do it externally.
+        /* Adds the task to the list, no cancel() method like in bukkit, so we have to do it externally.
          More complicated than it should be becuz im a bad programmer */
         currentTasks = currentTasks?.plus(schedulerManager.buildTask {
             // cancels after 60 sounds
@@ -58,10 +61,9 @@ class SoundController(private val instance: Instance) {
                 }
             }
 
-            // self-explanatory
-            for (player in instance.players) {
+            game.forplayers {
                 // extension function explained above
-                player.spook()
+                spook()
             }
 
             i++
@@ -75,8 +77,8 @@ class SoundController(private val instance: Instance) {
                 if (Random.nextInt(20) == 1) {
                     soundFrenzy()
                 }
-                for (player in instance.players) {
-                    player.spook()
+                game.forplayers {
+                    spook()
                 }
             }
 

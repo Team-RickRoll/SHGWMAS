@@ -1,6 +1,7 @@
 package io.github.TeamRickRoll
 
 import io.github.TeamRickRoll.jumpscare.Jumpscare
+import io.github.TeamRickRoll.mob.MobController
 import io.github.TeamRickRoll.sounds.SoundController
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.Component
@@ -9,11 +10,13 @@ import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.title.Title
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
-import net.minestom.server.entity.GameMode
-import net.minestom.server.entity.Player
+import net.minestom.server.entity.*
+import net.minestom.server.entity.damage.DamageType
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventFilter
+import net.minestom.server.event.EventFilter.ALL
 import net.minestom.server.event.EventNode
+import net.minestom.server.event.entity.EntityAttackEvent
 import net.minestom.server.event.player.PlayerBlockInteractEvent
 import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
@@ -22,11 +25,12 @@ import net.minestom.server.potion.PotionEffect
 import net.minestom.server.tag.Tag
 import net.minestom.server.timer.Task
 import java.time.Duration
+import java.util.function.Consumer
 import kotlin.random.Random
 
 class Game(val instance: Instance) {
     var gameState = 0
-
+    var canAttack = HashMap<Entity, Boolean>()
     private val startTitle = Title.title(
         Component.text("Good luck", NamedTextColor.GOLD),
         Component.text("I've hid them well...", NamedTextColor.RED)
@@ -38,7 +42,7 @@ class Game(val instance: Instance) {
     private var task: Task? = null
     private var timer: Int = 480
     private var currentCandy = 0
-    private val players = mutableListOf<Player>()
+    val players = mutableListOf<Player>()
     private val candyLocs = mutableListOf(
         Pos(-302.0, 72.0, -308.0),
         Pos(-316.0, 71.0, -340.0),
@@ -119,12 +123,23 @@ class Game(val instance: Instance) {
         spawnCandy()
         spawnPlayers()
         timer()
-        val soundController = SoundController(instance)
+        val soundController = SoundController(this)
+        val mobController = MobController(instance)
+        // Random Mob Spawner
+        MinecraftServer.getSchedulerManager().buildTask {
+            if(Jumpscare.getChance() < 2){
+                val player = players[Random.nextInt(players.size)]
+                mobController.spawnEntity(player.position, EntityType.ZOMBIE, player)
+            }
+        }.repeat(Duration.ofSeconds(1)).schedule()
+
         soundController.soundLoop()
     }
 
     private fun registerEvents() {
-        val eventNode = EventNode.type("player-listener", EventFilter.PLAYER)
+        val eventNode = EventNode.all("event-listener")
+
+        // Candy Pickup
         eventNode.listenOnly<PlayerBlockInteractEvent> {
             if (hand != Player.Hand.MAIN) return@listenOnly
             if (block.hasTag(Tag.String("candy"))) {
@@ -152,6 +167,21 @@ class Game(val instance: Instance) {
                 }
             }
         }
+
+        // Combat
+        eventNode.listenOnly<EntityAttackEvent> {
+                if (!canAttack.containsKey(entity)) {
+                    canAttack[entity] = true
+                }
+                if (canAttack[entity]!!) {
+                    (target as LivingEntity).damage(DamageType.fromEntity(entity), 3f)
+                    canAttack[entity] = false
+                    MinecraftServer.getSchedulerManager().buildTask { canAttack[entity] = true }
+                        .delay(Duration.ofSeconds(2)).schedule()
+                }
+            }
+
+        // Registering the node
         MinecraftServer.getGlobalEventHandler().addChild(eventNode)
     }
 
@@ -185,7 +215,7 @@ class Game(val instance: Instance) {
     }
 
     // More laziness
-    private fun forplayers(lambda: Player.() -> Unit) {
+    fun forplayers(lambda: Player.() -> Unit) {
         for (player in players) {
             lambda.invoke(player)
         }

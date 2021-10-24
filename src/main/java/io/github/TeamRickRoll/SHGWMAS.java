@@ -1,24 +1,16 @@
 package io.github.TeamRickRoll;
 
 import io.github.TeamRickRoll.commands.StartGame;
-import io.github.TeamRickRoll.mob.MobController;
-
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
-import net.minestom.server.entity.Entity;
-import net.minestom.server.entity.LivingEntity;
 import net.minestom.server.entity.Player;
-import net.minestom.server.entity.damage.DamageType;
 import net.minestom.server.event.GlobalEventHandler;
-import net.minestom.server.event.entity.EntityAttackEvent;
 import net.minestom.server.event.player.PlayerBlockBreakEvent;
 import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.event.player.PlayerLoginEvent;
 import net.minestom.server.extras.MojangAuth;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
-import java.time.Duration;
-import java.util.HashMap;
 
 public class SHGWMAS {
     public static void main(String[] args) {
@@ -27,8 +19,6 @@ public class SHGWMAS {
         InstanceManager instanceManager = MinecraftServer.getInstanceManager();
         InstanceContainer instanceContainer = instanceManager.createInstanceContainer();
         Game game = new Game(instanceContainer);
-        HashMap<Entity, Boolean> canAttack = new HashMap<>();
-        MobController mobController = new MobController(instanceContainer);
 
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
         globalEventHandler.addListener(PlayerLoginEvent.class, event -> {
@@ -49,19 +39,7 @@ public class SHGWMAS {
             event.setCancelled(true);
         });
 
-        globalEventHandler.addListener(EntityAttackEvent.class, event->{
-            if(!canAttack.containsKey(event.getEntity())){
-                canAttack.put(event.getEntity(), true);
-            }
-            if(canAttack.get(event.getEntity())){
-                ((LivingEntity)event.getTarget()).damage(DamageType.fromEntity(event.getEntity()), 3f);
-                canAttack.put(event.getEntity(), false);
-                MinecraftServer.getSchedulerManager().buildTask(() ->
-                            canAttack.put(event.getEntity(), true)
-                        ).delay(Duration.ofSeconds(2)).schedule();
-            }
 
-        });
 
         MinecraftServer.getCommandManager().register(
                 new StartGame(

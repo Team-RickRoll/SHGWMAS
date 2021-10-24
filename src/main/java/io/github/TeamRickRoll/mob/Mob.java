@@ -1,6 +1,8 @@
 package io.github.TeamRickRoll.mob;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EntityCreature;
 import net.minestom.server.entity.EntityType;
@@ -8,6 +10,7 @@ import net.minestom.server.entity.ai.EntityAIGroupBuilder;
 import net.minestom.server.entity.ai.TargetSelector;
 import net.minestom.server.entity.ai.goal.FollowTargetGoal;
 import net.minestom.server.entity.ai.goal.MeleeAttackGoal;
+import net.minestom.server.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
@@ -15,12 +18,12 @@ import java.time.Duration;
 public class Mob extends EntityCreature {
 
     Entity target;
-    public Mob(@NotNull EntityType entityType, Entity target) {
+    public Mob(@NotNull EntityType entityType, Entity target, Team team) {
         super(entityType);
         this.target = target;
-        setHealth(20f);
+        setHealth(6f);
+        setTeam(team);
         setGlowing(true);
-        setCustomName(Component.text("THIS IS A NAME"));
 
         // Basic ai that follows the entity provided in the constructor
         // Updates its path once every 20ms

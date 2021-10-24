@@ -1,21 +1,23 @@
 package io.github.TeamRickRoll;
 
 import io.github.TeamRickRoll.commands.StartGame;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.GlobalEventHandler;
-import net.minestom.server.event.player.PlayerBlockBreakEvent;
-import net.minestom.server.event.player.PlayerDisconnectEvent;
-import net.minestom.server.event.player.PlayerLoginEvent;
-import net.minestom.server.event.player.PlayerSpawnEvent;
+import net.minestom.server.event.player.*;
 import net.minestom.server.extras.MojangAuth;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
+import net.minestom.server.item.ItemStack;
+import net.minestom.server.item.Material;
+import net.minestom.server.scoreboard.Team;
 
 public class SHGWMAS {
     public static void main(String[] args) {
+
         MinecraftServer minestom = MinecraftServer.init();
         MojangAuth.init();
         InstanceManager instanceManager = MinecraftServer.getInstanceManager();
@@ -36,6 +38,17 @@ public class SHGWMAS {
                 player.setGameMode(GameMode.SPECTATOR);
                 player.teleport(new Pos(-275, 69, -330));
             }
+        });
+
+        globalEventHandler.addListener(PlayerChatEvent.class, event ->{
+            if(event.getMessage().equals("a")){
+                event.getPlayer().getInventory().addItemStack(ItemStack.of(Material.BARRIER));
+            }else if(event.getMessage().equals("c")){
+                event.getPlayer().setGameMode(GameMode.CREATIVE);
+            }else {
+                instanceContainer.saveChunksToStorage();
+            }
+
         });
 
         globalEventHandler.addListener(PlayerDisconnectEvent.class, event -> {

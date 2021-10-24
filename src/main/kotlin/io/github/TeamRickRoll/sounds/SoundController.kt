@@ -32,6 +32,15 @@ class SoundController(private val game: Game) {
             SoundEvent.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR,
             SoundEvent.ENTITY_LIGHTNING_BOLT_IMPACT,
             SoundEvent.ENTITY_LIGHTNING_BOLT_THUNDER,
+            SoundEvent.ENTITY_COD_DEATH,
+            SoundEvent.ENTITY_DONKEY_EAT,
+            SoundEvent.ENTITY_ENDERMITE_DEATH,
+            SoundEvent.ENTITY_EVOKER_DEATH,
+            SoundEvent.ENTITY_EVOKER_PREPARE_ATTACK,
+            SoundEvent.ENTITY_EVOKER_PREPARE_SUMMON,
+            SoundEvent.ENTITY_EVOKER_PREPARE_WOLOLO,
+            SoundEvent.ENTITY_AXOLOTL_DEATH,
+            SoundEvent.ENTITY_AXOLOTL_HURT,
             /* Needs more sounds */
         )
 

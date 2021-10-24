@@ -1,8 +1,6 @@
 package io.github.TeamRickRoll;
 
 import io.github.TeamRickRoll.commands.StartGame;
-import io.github.TeamRickRoll.commands.TestSpawn;
-import io.github.TeamRickRoll.commands.gmc;
 import io.github.TeamRickRoll.mob.MobController;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
@@ -23,7 +21,6 @@ import net.minestom.server.instance.InstanceManager;
 
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SHGWMAS {
 
@@ -92,13 +89,6 @@ public class SHGWMAS {
                 new StartGame(
                      game
                 )
-        );
-        MinecraftServer.getCommandManager().register(
-                new gmc()
-        );
-
-        MinecraftServer.getCommandManager().register(
-                new TestSpawn(mobController)
         );
         // Starts the server, please don't put stuff under here :3
         minestom.start("0.0.0.0", 25565);

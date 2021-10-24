@@ -13,8 +13,8 @@ import kotlin.random.Random
 
 class SoundController(private val instance: Instance) {
     // In case somehow multiple frenzies start, they will all stop correctly by looping through all of them in this list
-    private var currentTasks: List<Task>? = mutableListOf();
-    private val schedulerManager: SchedulerManager = MinecraftServer.getSchedulerManager();
+    private var currentTasks: List<Task>? = mutableListOf()
+    private val schedulerManager: SchedulerManager = MinecraftServer.getSchedulerManager()
 
     /* Basically static, but in kotlin */
     companion object {
@@ -58,7 +58,7 @@ class SoundController(private val instance: Instance) {
     }
 
     fun soundFrenzy() {
-        var i = 0;
+        var i = 0
         /* adds the task to the list, no cancel() method like in bukkit, so we have to do it externally.
          More complicated than it should be becuz im a bad programmer */
         currentTasks = currentTasks?.plus(schedulerManager.buildTask {

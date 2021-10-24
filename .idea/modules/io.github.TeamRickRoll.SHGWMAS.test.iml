@@ -4,14 +4,10 @@
     <facet type="minecraft" name="Minecraft">
       <configuration>
         <autoDetectTypes>
-          <platformType>MIXIN</platformType>
           <platformType>ADVENTURE</platformType>
+          <platformType>MIXIN</platformType>
         </autoDetectTypes>
       </configuration>
     </facet>
-  </component>
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
-    <exclude-output />
-    <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

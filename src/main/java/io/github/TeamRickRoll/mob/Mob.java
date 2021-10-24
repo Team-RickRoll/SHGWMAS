@@ -8,7 +8,6 @@ import net.minestom.server.entity.ai.EntityAIGroupBuilder;
 import net.minestom.server.entity.ai.TargetSelector;
 import net.minestom.server.entity.ai.goal.FollowTargetGoal;
 import net.minestom.server.entity.ai.goal.MeleeAttackGoal;
-import net.minestom.server.instance.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;

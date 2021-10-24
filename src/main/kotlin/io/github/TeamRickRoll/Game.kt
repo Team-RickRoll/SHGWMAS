@@ -15,7 +15,6 @@ import net.minestom.server.event.EventFilter
 import net.minestom.server.event.EventNode
 import net.minestom.server.event.player.PlayerBlockInteractEvent
 import net.minestom.server.instance.Instance
-import net.minestom.server.instance.InstanceContainer
 import net.minestom.server.instance.block.Block
 import net.minestom.server.potion.Potion
 import net.minestom.server.potion.PotionEffect

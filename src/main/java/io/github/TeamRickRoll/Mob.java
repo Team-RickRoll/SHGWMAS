@@ -7,6 +7,7 @@ import net.minestom.server.entity.EntityCreature;
 import net.minestom.server.entity.EntityType;
 import net.minestom.server.entity.Player;
 import net.minestom.server.entity.ai.EntityAIGroupBuilder;
+import net.minestom.server.entity.ai.TargetSelector;
 import net.minestom.server.entity.ai.goal.FollowTargetGoal;
 import net.minestom.server.entity.ai.goal.MeleeAttackGoal;
 import net.minestom.server.entity.ai.goal.RandomLookAroundGoal;
@@ -18,25 +19,23 @@ import java.time.Duration;
 
 public class Mob extends EntityCreature {
 
-    public Mob(@NotNull EntityType entityType) {
+    public Mob(@NotNull EntityType entityType, Entity target) {
         super(entityType);
-    }
-
-    public void meleeTargetPlayer(EntityCreature entity){
         addAIGroup(
                 new EntityAIGroupBuilder()
-                        .addGoalSelector(new MeleeAttackGoal(entity, 1, Duration.ofSeconds(2)))
+                        .addTargetSelector(new TargetSelector(this) {
+                            @Override
+                            public Entity findTarget() {
+                                return target;
+                            }
+                        })
+                        .addGoalSelector(new FollowTargetGoal(this, Duration.ofSeconds(1)))
                         .build()
         );
+
     }
 
-    public void followTargetPlayer(EntityCreature entity, Long time){
-        addAIGroup(
-                new EntityAIGroupBuilder()
-                        .addGoalSelector(new FollowTargetGoal(entity, Duration.ofSeconds(time)))
-                        .build()
-        );
-    }
+
 
 
 

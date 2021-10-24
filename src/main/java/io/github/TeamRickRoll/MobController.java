@@ -1,10 +1,16 @@
 package io.github.TeamRickRoll;
 
-import kotlin.reflect.jvm.internal.impl.incremental.components.Position;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.Entity;
+import net.minestom.server.entity.EntityCreature;
 import net.minestom.server.entity.EntityType;
+import net.minestom.server.entity.ai.EntityAIGroupBuilder;
+import net.minestom.server.entity.ai.goal.FollowTargetGoal;
+import net.minestom.server.entity.ai.goal.MeleeAttackGoal;
+import net.minestom.server.event.entity.EntityTickEvent;
 import net.minestom.server.instance.Instance;
+
+import java.time.Duration;
 
 public class MobController {
 
@@ -13,10 +19,13 @@ public class MobController {
         this.instance = instance;
     }
 
-    public void spawnEntity(Pos position, EntityType entityType){
+    public void spawnEntity(Pos position, EntityType entityType, Entity target) {
 
-        Entity entity = new Mob(entityType);
+        Entity entity = new Mob(entityType, target);
         entity.setInstance(instance, position);
-
     }
+
+
+
+
 }

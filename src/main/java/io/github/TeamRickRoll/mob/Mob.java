@@ -7,13 +7,19 @@ import net.minestom.server.entity.EntityType;
 import net.minestom.server.entity.ai.EntityAIGroupBuilder;
 import net.minestom.server.entity.ai.TargetSelector;
 import net.minestom.server.entity.ai.goal.FollowTargetGoal;
+import net.minestom.server.entity.ai.goal.MeleeAttackGoal;
+import net.minestom.server.instance.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
 
 public class Mob extends EntityCreature {
+
+    Entity target;
     public Mob(@NotNull EntityType entityType, Entity target) {
         super(entityType);
+        this.target = target;
+        setHealth(20f);
         setGlowing(true);
         setCustomName(Component.text("THIS IS A NAME"));
 
@@ -30,7 +36,24 @@ public class Mob extends EntityCreature {
                         })
                         // The follow goal itself, grabs what entity it needs to follow from above
                         .addGoalSelector(new FollowTargetGoal(this, Duration.ofMillis(20)))
+                        .addGoalSelector(new MeleeAttackGoal(this, 1.5, Duration.ofMillis(500)))
                         .build()
         );
+    }
+    @Override
+    public void update(long time){
+        // Best variable names
+        double shitz = position.x() + position.y() + position.z();
+        double playerShitz = target.getPosition().x() + target.getPosition().y() + target.getPosition().z();
+
+        if((Math.max(shitz, playerShitz) - Math.min(shitz, playerShitz)) >= 20){
+            kill();
+        }
+
+        // AI
+        aiTick(time);
+
+        // Path finding
+        this.getNavigator().tick();
     }
 }

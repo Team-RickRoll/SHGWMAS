@@ -1,4 +1,4 @@
-package io.github.TeamRickRoll;
+package io.github.TeamRickRoll.commands;
 
 import net.minestom.server.command.builder.Command;
 import net.minestom.server.entity.GameMode;

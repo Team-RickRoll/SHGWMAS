@@ -1,5 +1,6 @@
 package io.github.TeamRickRoll
 
+import io.github.TeamRickRoll.jumpscare.Jumpscare
 import io.github.TeamRickRoll.sounds.SoundController
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.Component
@@ -136,6 +137,10 @@ class Game(val instance: Instance) {
                         Component.text("has been found!", NamedTextColor.RED)
                     )
                 )
+                // When player found candy, there is a chance of 40% to send a jumpscare!
+                if(Jumpscare.getChance() <= 40){
+                   Jumpscare().sendJumpscare(player);
+                }
                 if (currentCandy == 8) {
                     MinecraftServer.getSchedulerManager().buildTask {
                         announce(
@@ -197,8 +202,9 @@ class Game(val instance: Instance) {
             bossBar.name(Component.text("Time Left: ${formatTime(timer)}"))
 
             // Mafs
-            bossBar.progress((timer.toFloat() / 300.toFloat()))
-
+            // Nico here, when I tried playing, the bossbar didn't work because it had a bad progress
+            // your value was 300 and the progress got to 1.6 and errors, so I found the perfect value
+            bossBar.progress((timer.toFloat() / 495.toFloat()))
             timer--
             if (timer <= 0) {
                 task?.cancel()

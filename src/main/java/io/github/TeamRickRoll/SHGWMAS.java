@@ -8,6 +8,7 @@ import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.GlobalEventHandler;
+import net.minestom.server.event.player.PlayerBlockBreakEvent;
 import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.event.player.PlayerLoginEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
@@ -43,22 +44,27 @@ public class SHGWMAS {
         globalEventHandler.addListener(PlayerLoginEvent.class, event -> {
             final Player player = event.getPlayer();
             event.setSpawningInstance(instanceContainer);
-            player.setRespawnPoint(new Pos(0, 50, 0));
+            player.setRespawnPoint(new Pos(-275, 69, -330));
         });
 
         globalEventHandler.addListener(PlayerSpawnEvent.class, event -> {
             Player player = event.getPlayer();
            if(game.getGameState() == 1){
                player.setGameMode(GameMode.SPECTATOR);
-               player.teleport(new Pos(0, 150, 0));
+               player.teleport(new Pos(-275, 69, -330));
            }
         });
 
         globalEventHandler.addListener(PlayerDisconnectEvent.class, event -> {
-            if(instanceContainer.getPlayers().size() < 2 && game.getGameState() == 1){
+            if(instanceContainer.getPlayers().size() < 2 /* Event called before the player is removed from the players map */
+                    && game.getGameState() == 1){
                 // Tried to break the game huh?
                 MinecraftServer.getServer().stop();
             }
+        });
+
+        globalEventHandler.addListener(PlayerBlockBreakEvent.class, event ->{
+            event.setCancelled(true);
         });
 
         MinecraftServer.getCommandManager().register(
@@ -66,8 +72,11 @@ public class SHGWMAS {
                      game
                 )
         );
+        MinecraftServer.getCommandManager().register(
+                new gmc()
+        );
 
-        // Starts the server, please dont put stuff under here :3
+        // Starts the server, please don't put stuff under here :3
         minestom.start("0.0.0.0", 25565);
     }
 }

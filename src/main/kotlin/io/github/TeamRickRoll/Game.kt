@@ -8,6 +8,7 @@ import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.title.Title
 import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
+import net.minestom.server.entity.GameMode
 import net.minestom.server.entity.Player
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventFilter
@@ -21,8 +22,9 @@ import net.minestom.server.potion.PotionEffect
 import net.minestom.server.tag.Tag
 import net.minestom.server.timer.Task
 import java.time.Duration
+import kotlin.random.Random
 
-class Game(private val instance: Instance) {
+class Game(val instance: Instance) {
     var gameState = 0
 
     private val startTitle = Title.title(
@@ -30,27 +32,50 @@ class Game(private val instance: Instance) {
         Component.text("I've hid them well...", NamedTextColor.RED)
     )
     private val winTitle = Title.title(
-        Component.text("ALL OF THE CANDY HAS BEEN FOUND!"),
-        Component.text("You are free to leave >:), until later. Alligator")
+        Component.text("ALL OF THE CANDY HAS BEEN FOUND!", NamedTextColor.GREEN),
+        Component.text("You are free to leave >:), until later. Alligator", NamedTextColor.DARK_GREEN)
     )
     private var task: Task? = null
-    private var timer: Int = 300
+    private var timer: Int = 480
     private var currentCandy = 0
     private val players = mutableListOf<Player>()
-    private val candyLocs = listOf(
-        Pos(0.toDouble(), 40.toDouble(), 0.toDouble()),
-        Pos(1.toDouble(), 40.toDouble(), 0.toDouble()),
-        Pos(2.toDouble(), 40.toDouble(), 0.toDouble()),
-        Pos(3.toDouble(), 40.toDouble(), 0.toDouble()),
-        Pos(0.toDouble(), 41.toDouble(), 0.toDouble()),
-        Pos(1.toDouble(), 41.toDouble(), 0.toDouble()),
-        Pos(2.toDouble(), 41.toDouble(), 0.toDouble()),
-        Pos(3.toDouble(), 41.toDouble(), 0.toDouble())
-
+    private val candyLocs = mutableListOf(
+        Pos(-302.0, 72.0, -308.0),
+        Pos(-316.0, 71.0, -340.0),
+        Pos(-321.0, 71.0, -320.0),
+        Pos(-327.0, 72.0, -320.0),
+        Pos(-342.0, 71.0, -343.0),
+        Pos(-324.0, 58.0, -344.0),
+        Pos(-314.0, 58.0, -331.0),
+        Pos(-311.0, 58.0, -352.0),
+        Pos(-293.0, 58.0, -346.0),
+        Pos(-349.0, 71.0, -326.0),
+        Pos(-343.0, 71.0, -322.0),
+        Pos(-344.0, 71.0, -302.0),
+        Pos(-348.0, 71.0, -314.0),
+        Pos(-321.0, 73.0, -316.0),
+        Pos(-330.0, 71.0, -302.0),
+        Pos(-312.0, 71.0, -304.0),
+        Pos(-342.0, 80.0, -334.0),
+        Pos(-342.0, 80.0, -323.0),
+        Pos(-331.0, 80.0, -302.0),
+        Pos(-298.0, 80.0, -306.0),
+        Pos(-308.0, 80.0, -309.0),
+        Pos(-309.0, 81.0, -322.0),
+        Pos(-312.0, 81.0, -359.0),
+        Pos(-299.0, 80.0, -346.0),
+        Pos(-318.0, 80.0, -351.0),
+        Pos(-316.0, 81.0, -358.0),
+        Pos(-327.0, 80.0, -363.0),
+        Pos(-334.0, 80.0, -346.0),
+        Pos(-330.0, 91.0, -357.0),
+        Pos(-344.0, 82.0, -352.0),
+        Pos(-343.0, 82.0, -343.0),
+        Pos(-332.0, 80.0, -325.0),
     )
     private val bossBar = BossBar.bossBar(
         Component.text("Time Left: ${formatTime(timer)}"),
-        (timer / 300).toFloat(),
+        (timer / 480).toFloat(),
         BossBar.Color.RED,
         BossBar.Overlay.PROGRESS
     )
@@ -61,7 +86,7 @@ class Game(private val instance: Instance) {
 
     private fun spawnPlayers() {
         for (player in instance.players) {
-            player.teleport(Pos(0.toDouble(), 40.toDouble(), 0.toDouble()))
+            player.teleport(Pos(-310.0, 71.0, -329.5, 90f, 0f))
             player.addEffect(
                 Potion(
                     PotionEffect.BLINDNESS,
@@ -75,10 +100,16 @@ class Game(private val instance: Instance) {
             player.showTitle(
                 startTitle
             )
+            player.gameMode = GameMode.ADVENTURE
         }
     }
 
     private fun spawnCandy() {
+        for(i in 1..24){
+            val random = Random.nextInt(candyLocs.size)
+            instance.setBlock(candyLocs.get(random), Block.AIR)
+            candyLocs.removeAt(random)
+        }
         for (pos in candyLocs) {
             instance.setBlock(pos, Block.AMETHYST_BLOCK.withTag(Tag.String("candy"), "yes"))
         }

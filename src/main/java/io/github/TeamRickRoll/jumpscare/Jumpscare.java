@@ -6,7 +6,6 @@ import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
-import net.minestom.server.sound.SoundEvent;
 import net.minestom.server.utils.time.TimeUnit;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +20,6 @@ public class Jumpscare {
 
     public @NotNull Runnable createTask(Player player, int chance){
         return () -> {
-            System.out.println("debug runnable");
             try {
                 if(getChance() <= chance) {
                     player.setHelmet(createItem());
@@ -38,12 +36,10 @@ public class Jumpscare {
     }
 
     public void sendJumpscare(Player player){
-        System.out.println("Debug sendJumpscare");
         MinecraftServer.getSchedulerManager().buildTask(createTask(player, 100)).delay(2, TimeUnit.SECOND).schedule();
     }
 
     public void sendRandomJumpscares(Player player){
-        System.out.println("Debug sendRandomJumpscare");
         MinecraftServer.getSchedulerManager().buildTask(createTask(player, 30)).repeat(10, TimeUnit.SECOND).schedule();
     }
 

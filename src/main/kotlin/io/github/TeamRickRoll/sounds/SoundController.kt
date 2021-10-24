@@ -30,17 +30,6 @@ class SoundController(private val instance: Instance) {
             SoundEvent.ENTITY_SKELETON_AMBIENT,
             SoundEvent.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR,
             SoundEvent.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR,
-            SoundEvent.ENTITY_WITHER_AMBIENT,
-            SoundEvent.ENTITY_ENDER_DRAGON_AMBIENT,
-            SoundEvent.ENTITY_ENDER_DRAGON_DEATH,
-            SoundEvent.ENTITY_ENDER_DRAGON_GROWL,
-            SoundEvent.ENTITY_WITCH_DEATH,
-            SoundEvent.ENTITY_WITCH_AMBIENT,
-            SoundEvent.ENTITY_WITCH_HURT,
-            SoundEvent.ENTITY_SPIDER_AMBIENT,
-            SoundEvent.ENTITY_SPIDER_DEATH,
-            SoundEvent.ENTITY_SPIDER_HURT,
-            SoundEvent.ENTITY_SPIDER_STEP,
             /* Needs more sounds */
         )
 

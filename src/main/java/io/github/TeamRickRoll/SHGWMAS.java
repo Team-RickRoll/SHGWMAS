@@ -33,8 +33,11 @@ public class SHGWMAS {
 
         //instanceContainer.setChunkGenerator(new GeneratorDemo());
 
+        MobController mobController = new MobController(instanceContainer);
+
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
         globalEventHandler.addListener(PlayerLoginEvent.class, event -> {
+<<<<<<< HEAD
             final Player player = event.getPlayer();
             event.setSpawningInstance(instanceContainer);
             player.setRespawnPoint(new Pos(0, 200, 0));
@@ -50,6 +53,12 @@ public class SHGWMAS {
                 }
                 System.out.println(i + " | " + s.getBlockLight().length + " | " + sb);
             });
+=======
+           final Player player = event.getPlayer();
+           event.setSpawningInstance(instanceContainer);
+           player.setRespawnPoint(new Pos(0, 50, 0));
+
+>>>>>>> origin/wagon
         });
 
         minestom.start("0.0.0.0", 25565);

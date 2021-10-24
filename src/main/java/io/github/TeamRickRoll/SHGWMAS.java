@@ -1,13 +1,18 @@
 package io.github.TeamRickRoll;
 
 import io.github.TeamRickRoll.commands.StartGame;
+import io.github.TeamRickRoll.commands.TestSpawn;
+import io.github.TeamRickRoll.commands.gmc;
 import io.github.TeamRickRoll.mob.MobController;
-import io.github.TeamRickRoll.sounds.SoundController;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
+import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.GameMode;
+import net.minestom.server.entity.LivingEntity;
 import net.minestom.server.entity.Player;
+import net.minestom.server.entity.damage.DamageType;
 import net.minestom.server.event.GlobalEventHandler;
+import net.minestom.server.event.entity.EntityAttackEvent;
 import net.minestom.server.event.player.PlayerBlockBreakEvent;
 import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.event.player.PlayerLoginEvent;
@@ -16,12 +21,14 @@ import net.minestom.server.extras.MojangAuth;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
 
-import javax.swing.*;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SHGWMAS {
 
     public static void main(String[] args) {
-
+        HashMap<Entity, Boolean> canAttack = new HashMap<>();
         MinecraftServer minestom = MinecraftServer.init();
 
         // Mojang auth...
@@ -67,6 +74,20 @@ public class SHGWMAS {
             event.setCancelled(true);
         });
 
+        globalEventHandler.addListener(EntityAttackEvent.class, event->{
+            if(!canAttack.containsKey(event.getEntity())){
+                canAttack.put(event.getEntity(), true);
+            }
+            if(canAttack.get(event.getEntity())){
+                ((LivingEntity)event.getTarget()).damage(DamageType.fromEntity(event.getEntity()), 3f);
+                canAttack.put(event.getEntity(), false);
+                MinecraftServer.getSchedulerManager().buildTask(() ->
+                            canAttack.put(event.getEntity(), true)
+                        ).delay(Duration.ofSeconds(2)).schedule();
+            }
+
+        });
+
         MinecraftServer.getCommandManager().register(
                 new StartGame(
                      game
@@ -76,6 +97,9 @@ public class SHGWMAS {
                 new gmc()
         );
 
+        MinecraftServer.getCommandManager().register(
+                new TestSpawn(mobController)
+        );
         // Starts the server, please don't put stuff under here :3
         minestom.start("0.0.0.0", 25565);
     }

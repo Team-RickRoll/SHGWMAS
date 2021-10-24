@@ -40,7 +40,7 @@ class SoundController(private val instance: Instance) {
             SoundEvent.ENTITY_SPIDER_AMBIENT,
             SoundEvent.ENTITY_SPIDER_DEATH,
             SoundEvent.ENTITY_SPIDER_HURT,
-            SoundEvent.ENTITY_SPIDER_STEP
+            SoundEvent.ENTITY_SPIDER_STEP,
             /* Needs more sounds */
         )
 

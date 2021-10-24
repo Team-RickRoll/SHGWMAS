@@ -30,3 +30,7 @@ build
 # YAML
 *.yml
 *.yaml
+
+# Binary files
+*.lock
+*.bin

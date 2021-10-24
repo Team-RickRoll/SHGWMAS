@@ -40,17 +40,6 @@ public class SHGWMAS {
             }
         });
 
-        globalEventHandler.addListener(PlayerChatEvent.class, event ->{
-            if(event.getMessage().equals("a")){
-                event.getPlayer().getInventory().addItemStack(ItemStack.of(Material.BARRIER));
-            }else if(event.getMessage().equals("c")){
-                event.getPlayer().setGameMode(GameMode.CREATIVE);
-            }else {
-                instanceContainer.saveChunksToStorage();
-            }
-
-        });
-
         globalEventHandler.addListener(PlayerDisconnectEvent.class, event -> {
             if(instanceContainer.getPlayers().size() < 2 /* Event called before the player is removed from the players map */
                     && game.getGameState() == 1){

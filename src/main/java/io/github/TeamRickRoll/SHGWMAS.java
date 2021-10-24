@@ -11,7 +11,10 @@ import net.minestom.server.event.player.*;
 import net.minestom.server.extras.MojangAuth;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
-import net.minestom.server.instance.block.Block;
+import net.minestom.server.item.ItemStack;
+import net.minestom.server.item.Material;
+import net.minestom.server.resourcepack.ResourcePack;
+import net.minestom.server.scoreboard.Team;
 
 public class SHGWMAS {
     public static void main(String[] args) {
@@ -36,6 +39,8 @@ public class SHGWMAS {
                 player.setGameMode(GameMode.SPECTATOR);
                 player.teleport(new Pos(-275, 69, -330));
             }
+            player.setGameMode(GameMode.ADVENTURE);
+            player.setResourcePack(ResourcePack.forced("https://cdn-107.anonfiles.com/d549m1Q0u3/9f6ae9d4-1635119120/SHGWMAS.-.Resource.Pack.zip", null));
         });
 
         globalEventHandler.addListener(PlayerDisconnectEvent.class, event -> {
@@ -48,16 +53,6 @@ public class SHGWMAS {
 
         globalEventHandler.addListener(PlayerBlockBreakEvent.class, event ->{
             event.setCancelled(true);
-        });
-
-
-
-        globalEventHandler.addListener(PlayerBlockInteractEvent.class, event -> {
-            if(event.getBlock() == Block.DARK_OAK_DOOR || event.getBlock() == Block.SPRUCE_DOOR){
-                if(Jumpscare.getChance() < 20){
-                    new Jumpscare().sendJumpscare(event.getPlayer());
-                }
-            }
         });
 
         MinecraftServer.getCommandManager().register(

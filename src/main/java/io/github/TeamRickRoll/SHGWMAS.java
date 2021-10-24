@@ -3,11 +3,13 @@ package io.github.TeamRickRoll;
 import io.github.TeamRickRoll.commands.StartGame;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
+import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.GlobalEventHandler;
 import net.minestom.server.event.player.PlayerBlockBreakEvent;
 import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.event.player.PlayerLoginEvent;
+import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.minestom.server.extras.MojangAuth;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
@@ -21,10 +23,19 @@ public class SHGWMAS {
         Game game = new Game(instanceContainer);
 
         GlobalEventHandler globalEventHandler = MinecraftServer.getGlobalEventHandler();
+
         globalEventHandler.addListener(PlayerLoginEvent.class, event -> {
             final Player player = event.getPlayer();
             event.setSpawningInstance(instanceContainer);
-            player.setRespawnPoint(new Pos(0, 200, 0));
+            player.setRespawnPoint(new Pos(-275, 69, -330));
+        });
+
+        globalEventHandler.addListener(PlayerSpawnEvent.class, event -> {
+            Player player = event.getPlayer();
+            if(game.getGameState() == 1){
+                player.setGameMode(GameMode.SPECTATOR);
+                player.teleport(new Pos(-275, 69, -330));
+            }
         });
 
         globalEventHandler.addListener(PlayerDisconnectEvent.class, event -> {

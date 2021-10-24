@@ -3,12 +3,9 @@ package io.github.TeamRickRoll.jumpscare;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import net.minestom.server.MinecraftServer;
-import net.minestom.server.entity.ItemEntity;
 import net.minestom.server.entity.Player;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
-import net.minestom.server.utils.time.TimeUnit;
-import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
 import java.util.Random;

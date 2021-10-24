@@ -138,7 +138,7 @@ class Game(val instance: Instance) {
                 )
                 // When player found candy, there is a chance of 40% to send a jumpscare!
                 if(Jumpscare.getChance() <= 40){
-                   Jumpscare().sendJumpscare(player);
+                   Jumpscare().sendJumpscare(player)
                 }
                 if (currentCandy == 8) {
                     MinecraftServer.getSchedulerManager().buildTask {

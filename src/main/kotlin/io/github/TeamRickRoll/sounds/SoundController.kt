@@ -1,7 +1,6 @@
 package io.github.TeamRickRoll.sounds
 
 import io.github.TeamRickRoll.Game
-import io.github.TeamRickRoll.mob.MobController
 import net.kyori.adventure.sound.Sound
 import net.minestom.server.MinecraftServer
 import net.minestom.server.entity.Player

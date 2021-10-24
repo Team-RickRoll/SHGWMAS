@@ -13,8 +13,6 @@ import net.minestom.server.coordinate.Pos
 import net.minestom.server.entity.*
 import net.minestom.server.entity.damage.DamageType
 import net.minestom.server.event.Event
-import net.minestom.server.event.EventFilter
-import net.minestom.server.event.EventFilter.ALL
 import net.minestom.server.event.EventNode
 import net.minestom.server.event.entity.EntityAttackEvent
 import net.minestom.server.event.player.PlayerBlockInteractEvent
@@ -26,7 +24,6 @@ import net.minestom.server.potion.PotionEffect
 import net.minestom.server.tag.Tag
 import net.minestom.server.timer.Task
 import java.time.Duration
-import java.util.function.Consumer
 import kotlin.random.Random
 
 class Game(val instance: Instance) {

@@ -11,7 +11,9 @@ public class StartGame extends Command {
             if(game.getGameState() == 0){
                 game.startGame();
                 game.setGameState(1); // 0 - not in progress, 1 - in progress
-                new Jumpscare().sendRandomJumpscares(sender.asPlayer());
+                if(Jumpscare.getChance() < 40){
+                    new Jumpscare().sendJumpscare(sender.asPlayer());
+                }
             }
         }));
     }

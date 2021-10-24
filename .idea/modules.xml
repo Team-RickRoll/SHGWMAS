@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SHGWMAS.iml" filepath="$PROJECT_DIR$/.idea/modules/SHGWMAS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SHGWMAS.main.iml" filepath="$PROJECT_DIR$/.idea/modules/SHGWMAS.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SHGWMAS.test.iml" filepath="$PROJECT_DIR$/.idea/modules/SHGWMAS.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/io.github.TeamRickRoll.SHGWMAS.iml" filepath="$PROJECT_DIR$/.idea/modules/io.github.TeamRickRoll.SHGWMAS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/io.github.TeamRickRoll.SHGWMAS.main.iml" filepath="$PROJECT_DIR$/.idea/modules/io.github.TeamRickRoll.SHGWMAS.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/io.github.TeamRickRoll.SHGWMAS.test.iml" filepath="$PROJECT_DIR$/.idea/modules/io.github.TeamRickRoll.SHGWMAS.test.iml" />
+    </modules>
+  </component>
+</project>

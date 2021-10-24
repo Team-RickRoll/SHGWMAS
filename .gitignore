@@ -25,13 +25,7 @@ hs_err_pid*
 # IntelliJ and Eclipse/VSC files
 .idea/
 .settings/
-.build/
 
 # YAML
-# YAML IS THE BEST NOOBS
 *.yml
 *.yaml
-
-# Binary files
-*.lock
-*.bin

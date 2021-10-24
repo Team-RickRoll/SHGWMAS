@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.Duration;
 
 public class Mob extends EntityCreature {
+
     Entity target;
     public Mob(@NotNull EntityType entityType, Entity target) {
         super(entityType);

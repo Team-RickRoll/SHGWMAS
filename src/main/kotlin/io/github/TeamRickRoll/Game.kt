@@ -4,6 +4,7 @@ import io.github.TeamRickRoll.jumpscare.Jumpscare
 import io.github.TeamRickRoll.mob.MobController
 import io.github.TeamRickRoll.sounds.SoundController
 import net.kyori.adventure.bossbar.BossBar
+import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
@@ -23,6 +24,7 @@ import net.minestom.server.instance.Instance
 import net.minestom.server.instance.block.Block
 import net.minestom.server.potion.Potion
 import net.minestom.server.potion.PotionEffect
+import net.minestom.server.sound.SoundEvent
 import net.minestom.server.tag.Tag
 import net.minestom.server.timer.Task
 import java.time.Duration
@@ -151,6 +153,7 @@ class Game(val instance: Instance) {
             if (hand != Player.Hand.MAIN) return@listenOnly
             if (block.hasTag(Tag.String("candy"))) {
                 player.instance?.setBlock(blockPosition, Block.AIR)
+                candyLocs.remove(blockPosition)
                 currentCandy++
                 announce(
                     Title.title(
@@ -158,18 +161,21 @@ class Game(val instance: Instance) {
                         Component.text("has been found!", NamedTextColor.RED)
                     )
                 )
-                // When player found candy, there is a chance of 40% to send a jumpscare!
-                if(Jumpscare.getChance() <= 40){
+                // When player found candy, there is a chance of 20% to send a jumpscare!
+                if(Jumpscare.getChance() <= 20){
                    Jumpscare().sendJumpscare(player)
                 }
                 if (currentCandy == 8) {
                     MinecraftServer.getSchedulerManager().buildTask {
+                        forplayers {
+                            playSound(Sound.sound(SoundEvent.MUSIC_DISC_WARD, Sound.Source.MASTER, 1f, 1f))
+                        }
                         announce(
                             winTitle
                         )
                         MinecraftServer.getSchedulerManager().buildTask {
                             cleanupGame()
-                        }.delay(Duration.ofSeconds(5)).schedule()
+                        }.delay(Duration.ofSeconds(10)).schedule()
                     }.delay(Duration.ofSeconds(3)).schedule()
                 }
             }
@@ -181,7 +187,7 @@ class Game(val instance: Instance) {
                     canAttack[entity] = true
                 }
                 if (canAttack[entity]!!) {
-                    (target as LivingEntity).damage(DamageType.fromEntity(entity), 3f)
+                    (target as LivingEntity).damage(DamageType.fromEntity(entity), 1f)
                     canAttack[entity] = false
                     MinecraftServer.getSchedulerManager().buildTask { canAttack[entity] = true }
                         .delay(Duration.ofSeconds(2)).schedule()
@@ -262,6 +268,16 @@ class Game(val instance: Instance) {
                 MinecraftServer.getSchedulerManager().buildTask {
                     cleanupGame()
                 }.delay(Duration.ofSeconds(4)).schedule()
+            }
+            if(timer == 60){
+                forplayers {
+                    sendMessage(Component.text("Remaining candy revealed!", NamedTextColor.RED))
+                }
+                for (pos in candyLocs) {
+                    val entity = Entity(EntityType.FALLING_BLOCK)
+                    entity.isGlowing = true
+                    entity.setInstance(instance, pos)
+                }
             }
         }.repeat(Duration.ofSeconds(1)).schedule()
         task = timerTask

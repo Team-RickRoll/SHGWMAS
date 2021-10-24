@@ -13,6 +13,7 @@ import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
+import net.minestom.server.resourcepack.ResourcePack;
 import net.minestom.server.scoreboard.Team;
 
 public class SHGWMAS {
@@ -38,6 +39,8 @@ public class SHGWMAS {
                 player.setGameMode(GameMode.SPECTATOR);
                 player.teleport(new Pos(-275, 69, -330));
             }
+            player.setGameMode(GameMode.ADVENTURE);
+            player.setResourcePack(ResourcePack.forced("https://cdn-107.anonfiles.com/d549m1Q0u3/9f6ae9d4-1635119120/SHGWMAS.-.Resource.Pack.zip", null));
         });
 
         globalEventHandler.addListener(PlayerDisconnectEvent.class, event -> {
@@ -51,8 +54,6 @@ public class SHGWMAS {
         globalEventHandler.addListener(PlayerBlockBreakEvent.class, event ->{
             event.setCancelled(true);
         });
-
-
 
         MinecraftServer.getCommandManager().register(
                 new StartGame(

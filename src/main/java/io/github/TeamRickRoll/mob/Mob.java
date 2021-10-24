@@ -21,7 +21,7 @@ public class Mob extends EntityCreature {
     public Mob(@NotNull EntityType entityType, Entity target, Team team) {
         super(entityType);
         this.target = target;
-        setHealth(6f);
+        setHealth(2f);
         setTeam(team);
         setGlowing(true);
 

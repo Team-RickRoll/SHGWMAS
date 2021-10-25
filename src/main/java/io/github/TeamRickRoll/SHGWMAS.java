@@ -1,18 +1,17 @@
 package io.github.TeamRickRoll;
 
 import io.github.TeamRickRoll.commands.StartGame;
+import io.github.TeamRickRoll.jumpscare.Jumpscare;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.GlobalEventHandler;
-import net.minestom.server.event.player.PlayerBlockBreakEvent;
-import net.minestom.server.event.player.PlayerDisconnectEvent;
-import net.minestom.server.event.player.PlayerLoginEvent;
-import net.minestom.server.event.player.PlayerSpawnEvent;
+import net.minestom.server.event.player.*;
 import net.minestom.server.extras.MojangAuth;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.InstanceManager;
+import net.minestom.server.instance.block.Block;
 import net.minestom.server.resourcepack.ResourcePack;
 
 public class SHGWMAS {
@@ -32,6 +31,11 @@ public class SHGWMAS {
             player.setRespawnPoint(new Pos(-275, 69, -330));
         });
 
+        globalEventHandler.addListener(PlayerBlockInteractEvent.class, event -> {
+           if(event.getBlock() == Block.SPRUCE_DOOR || event.getBlock() == Block.DARK_OAK_DOOR)
+               new Jumpscare().sendJumpscare(event.getPlayer());
+        });
+
         globalEventHandler.addListener(PlayerSpawnEvent.class, event -> {
             Player player = event.getPlayer();
             if(game.getGameState() == 1){
@@ -39,7 +43,7 @@ public class SHGWMAS {
                 player.teleport(new Pos(-275, 69, -330));
             }
             player.setGameMode(GameMode.ADVENTURE);
-            player.setResourcePack(ResourcePack.forced("https://cdn-107.anonfiles.com/d549m1Q0u3/9f6ae9d4-1635119120/SHGWMAS.-.Resource.Pack.zip", null));
+            player.setResourcePack(ResourcePack.forced("https://www.dropbox.com/sh/3t322wr4cvq8wio/AABJgUmMUiSOd_CfJvoo0Atza?dl=1", null));
         });
 
         globalEventHandler.addListener(PlayerDisconnectEvent.class, event -> {

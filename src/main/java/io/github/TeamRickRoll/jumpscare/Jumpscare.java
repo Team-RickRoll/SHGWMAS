@@ -17,10 +17,14 @@ public class Jumpscare {
         player.setHelmet(jumpscareOverlay);
         // Plays custom sound from the texture pack
         player.playSound(Sound.sound(Key.key("custom.jumpscare"), Sound.Source.MASTER, 100f, 1f));
+        MinecraftServer.getSchedulerManager().buildTask(() -> player.setHelmet(ItemStack.AIR)).delay(Duration.ofSeconds(1)).schedule();
+    }
 
-        MinecraftServer.getSchedulerManager().buildTask(() ->{
-            player.setHelmet(ItemStack.AIR);
-        }).delay(Duration.ofSeconds(1)).schedule();
+    public void sendRandomJumpscare(Player player){
+        MinecraftServer.getSchedulerManager().buildTask(() -> {
+            if (getChance() <= 30)
+                sendJumpscare(player);
+        }).repeat(Duration.ofSeconds(15)).schedule();
     }
 
     public static int getChance(){
